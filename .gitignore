@@ -1,0 +1,5 @@
+node_modules/
+dist/
+public/main.js
+backup.config.json
+.backup-state.json

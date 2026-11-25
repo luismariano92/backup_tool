@@ -1,0 +1,12 @@
+{
+  "host": "127.0.0.1",
+  "port": 3000,
+  "webdav": {
+    "url": "https://dav.example.com/remote.php/dav/files/alice",
+    "username": "alice",
+    "password": "",
+    "remoteRoot": "backups"
+  },
+  "browseRoots": [],
+  "stateFile": ".backup-state.json"
+}

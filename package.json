@@ -1,0 +1,26 @@
+{
+  "name": "backup-tool",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Small web-based tool that backs up selected local directories to a WebDAV server, incrementally.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "npm run build:client && tsx watch src/server/index.ts",
+    "dev:client": "tsc -p tsconfig.client.json --watch",
+    "build": "tsc -p tsconfig.json && npm run build:client",
+    "build:client": "tsc -p tsconfig.client.json",
+    "start": "node dist/server/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.client.json --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.5"
+  }
+}

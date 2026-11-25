@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WebDAV Backup</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+             style="margin-right: 8px; flex-shrink: 0;">
+          <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+          <path d="M12 13v5"/>
+          <path d="m9.5 15.5 2.5-2.5 2.5 2.5"/>
+        </svg>
+        WebDAV Backup
+      </h1>
+      <div class="server">
+        <span id="server-status" class="badge">Loading…</span>
+        <button id="check-btn" type="button">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+               style="vertical-align: -2px; margin-right: 4px;">
+            <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+            <path d="m9 12 2 2 4-4"/>
+          </svg>
+          Test connection
+        </button>
+      </div>
+    </header>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <main class="layout">
+      <section class="panel">
+        <h2>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+               style="margin-right: 6px; flex-shrink: 0;">
+            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+          </svg>
+          Browse folders
+        </h2>
+        <div class="crumbs">
+          <button id="up-btn" type="button" title="Go to parent folder">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+                 style="vertical-align: -2px; margin-right: 2px;">
+              <path d="m18 15-6-6-6 6"/>
+            </svg>
+            Up
+          </button>
+          <code id="current-path">Drives</code>
+        </div>
+        <button id="add-folder-btn" type="button" disabled>+ Add to backup</button>
+        <ul id="dir-list" class="list"></ul>
+      </section>
+
+      <section class="panel">
+        <h2>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+               style="margin-right: 6px; flex-shrink: 0;">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          Selected for backup
+        </h2>
+        <ul id="selected-list" class="list"></ul>
+        <p id="selected-empty" class="muted">Tick folders on the left to add them.</p>
+        <button id="backup-btn" class="primary" type="button" disabled>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+               style="margin-right: 6px; flex-shrink: 0;">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          Back up now
+        </button>
+
+        <div id="job" class="job" hidden>
+          <div class="progress"><div id="progress-bar"></div></div>
+          <p id="job-summary"></p>
+          <ul id="job-failures" class="failures"></ul>
+        </div>
+      </section>
+    </main>
+
+    <section class="schedules-section">
+      <div class="schedules-header">
+        <h2>Scheduled Backups</h2>
+        <button id="new-schedule-btn" type="button">+ New Schedule</button>
+      </div>
+      <div id="schedule-list"></div>
+
+      <div id="schedule-form" hidden>
+        <h3 id="schedule-form-title">New Schedule</h3>
+        <label>Name <input id="sched-name" type="text" maxlength="200" placeholder="My daily backup" /></label>
+        <label>Time <input id="sched-time" type="time" /></label>
+        <label>Recurrence
+          <select id="sched-recurrence">
+            <option value="once">Once</option>
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+          </select>
+        </label>
+        <div id="sched-days-group" class="days-group" hidden>
+          <label><input type="checkbox" value="0" /> Sun</label>
+          <label><input type="checkbox" value="1" /> Mon</label>
+          <label><input type="checkbox" value="2" /> Tue</label>
+          <label><input type="checkbox" value="3" /> Wed</label>
+          <label><input type="checkbox" value="4" /> Thu</label>
+          <label><input type="checkbox" value="5" /> Fri</label>
+          <label><input type="checkbox" value="6" /> Sat</label>
+        </div>
+        <div class="sched-paths">
+          <h4>Folders to back up</h4>
+          <ul id="sched-path-list" class="list"></ul>
+          <button id="sched-add-path-btn" type="button">+ Add current folder</button>
+        </div>
+        <div class="schedule-form-actions">
+          <button id="sched-save-btn" type="button" class="primary">Save</button>
+          <button id="sched-cancel-btn" type="button">Cancel</button>
+        </div>
+      </div>
+    </section>
+
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
