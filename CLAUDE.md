@@ -82,13 +82,15 @@ stages or combine agents.
    Does NOT write code. Output: structured plan with files, steps, tests, security notes.
 
 2. **Implementer** (`.claude/agents/implementer.md`)
-   Implements the Researcher's plan step by step. Writes code and tests. Runs typecheck,
-   tests, and build to verify. Fixes any issues the Validator reports.
+   Implements the Researcher's plan step by step. Writes code and tests. Updates `README.md`
+   to reflect any user-visible changes (new features, endpoints, config, modules). Runs
+   typecheck, tests, and build to verify. Fixes any issues the Validator reports.
 
 3. **Validator** (`.claude/agents/validator.md`)
    Reviews for correctness, security, performance, and clean code. Verifies test coverage
-   >= 80%. If defects are found, sends them back to the Implementer. Repeats until all
-   criteria pass. Output: Validation Report (PASSED/FAILED).
+   >= 80% and that `README.md` accurately reflects the implemented changes. If defects are
+   found, sends them back to the Implementer. Repeats until all criteria pass.
+   Output: Validation Report (PASSED/FAILED).
 
 4. **Finalizer** (`.claude/agents/finalizer.md`)
    Commits with a conventional commit message and pushes. No user confirmation needed.

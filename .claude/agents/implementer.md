@@ -30,12 +30,19 @@ Take the Researcher's plan and implement it step by step. Write clean, secure, t
 
 3. **Write tests** — Implement the tests specified in the plan. Use vitest and the existing `test/fake-webdav.ts` helpers where applicable. Target >= 80% coverage for new code.
 
-4. **Verify your work** — After implementation:
+4. **Update README.md** — After implementing code changes, update the README to reflect them:
+   - Add or update sections for any new features, API endpoints, config options, commands, or modules.
+   - Update the Architecture tables (Server modules, API endpoints, Tests, Project structure) if files were added, removed, or renamed.
+   - Keep the existing style: tables for structured info, short prose for explanations.
+   - Do NOT rewrite sections unrelated to your changes.
+   - If the change is purely internal (refactor with no user-visible difference), no README update is needed.
+
+5. **Verify your work** — After implementation:
    - Run `npm run typecheck` to ensure no type errors.
    - Run `npm test` to ensure all tests pass.
    - Run `npm run build` to ensure the build succeeds.
 
-5. **Fix Validator feedback** — When the Validator reports defects, fix each one and re-verify.
+6. **Fix Validator feedback** — When the Validator reports defects, fix each one and re-verify.
 
 ## Constraints
 

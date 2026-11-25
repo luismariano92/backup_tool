@@ -46,7 +46,17 @@ Review the Implementer's code for correctness, security, performance, and clean 
 - Server imports use `.js` extensions.
 - Zero new runtime npm dependencies (unless explicitly requested).
 
-### 5. Test Coverage
+### 5. README Accuracy
+- If the change adds or modifies features, API endpoints, config options, commands, or modules, verify that `README.md` has been updated to reflect them.
+- Check that new server modules appear in the Architecture → Server table.
+- Check that new API endpoints appear in the API endpoints table.
+- Check that new config options appear in the Configuration section.
+- Check that new test files appear in the Tests table.
+- Check that new source files appear in the Project structure tree.
+- If the change is purely internal (no user-visible difference), README changes are not required.
+- Flag missing or inaccurate README updates as defects.
+
+### 6. Test Coverage
 - Run `npx vitest run --coverage` if coverage tooling is available, otherwise verify tests exist for all new public functions and meaningful code paths.
 - Target: >= 80% coverage for new/changed code.
 - Tests use the existing `test/fake-webdav.ts` helpers where applicable.
